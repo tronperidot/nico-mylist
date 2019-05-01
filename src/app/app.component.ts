@@ -3,6 +3,8 @@ import { Item } from './mylist-item/mylist-item.component';
 import { Observable, of } from 'rxjs';
 import { Condition } from './search-box/search-box.component';
 
+import { AngularFirestore } from '@angular/fire/firestore'; // 追加
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -13,9 +15,13 @@ export class AppComponent implements OnInit {
   items$: Observable<Item[]>;
   items: Item[];
 
-  constructor() {
+  constructor(db: AngularFirestore) {
     this.items$ = this.getItems$();
     this.items = this.getItems();
+    db.collection('comments')
+      .doc<any>('item')
+      .valueChanges()
+      .subscribe((val) => console.log(val));
   }
 
   ngOnInit() {
