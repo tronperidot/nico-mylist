@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 
 export interface Item {
+  id: string;
   title: string;
   url: string;
   thumbnail: string;
