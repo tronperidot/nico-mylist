@@ -1,0 +1,22 @@
+<div class="form-inline container">
+  <div style="margin-right: 10px">
+    <label>search area</label>
+  </div>
+  <div style="margin-right: 10px">
+    <input class="form-control" [(ngModel)]="searchText">
+  </div>
+  <div style="margin-right: 10px">
+    <button class="btn btn-primary" (click)="onSearch()">サガス</button>
+  </div>
+  <div style="margin-right: 10px">
+    <button class="btn btn-danger" (click)="onClear()">クリア</button>
+  </div>
+</div>
+<div>
+  <div class="tags-form">
+    <div>タグしぼりこみ</div>
+    <ng-container *ngFor="let tag of tags">
+      <div class="badge badge-pill" [ngClass]="{ 'badge-secondary': !tag.isCheck, 'badge-info': tag.isCheck }" (click)=onCheck(tag)>{{ tag.label }}</div>
+    </ng-container>
+  </div>
+</div>

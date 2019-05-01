@@ -1,0 +1,14 @@
+.tags-form {
+  margin-top: 10px;
+  border: 1px solid rgba(0,0,0,.125);
+  border-radius: 10px;
+  width: 100%;
+  padding: 10px;
+}
+
+.badge {
+  font-size: 24px;
+  margin-right: 10px;
+  font-family: "Noto Sans JP";
+  cursor: pointer;
+}

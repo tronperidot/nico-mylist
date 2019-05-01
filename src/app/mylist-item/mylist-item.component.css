@@ -1,0 +1,13 @@
+.card {
+  margin: 10px 0;
+  font-family: "Noto Sans JP";
+}
+.link {
+  cursor : pointer;
+  color: skyblue;
+}
+
+.badge {
+  margin-right: 5px;
+  font-family: "Noto Sans JP";
+}
