@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Item } from './mylist-item/mylist-item.component';
-import { Observable, of } from 'rxjs';
+import { Observable, of, combineLatest } from 'rxjs';
 import { Condition } from './search-box/search-box.component';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { MylistService, Mylist } from './services/mylist.service';
-import { map } from 'rxjs/operators';
+import { map, merge } from 'rxjs/operators';
+import { TagService, Tag } from './services/tag.service';
 
 @Component({
   selector: 'app-root',
@@ -19,14 +20,23 @@ export class AppComponent implements OnInit {
   cashedItems: Item[];
 
   constructor(
-    public db: AngularFirestore,
+    private tagService: TagService,
     private mylistService: MylistService,
   ) {
-    this.mylistService
-      .getMylists()
-      .pipe(
-        map((mylists) => mylists.map((mylist) => this.convert(mylist)))
-      ).subscribe((items) => this.cashedItems = this.items = items);
+    // this.db.collection('comments')
+    //   .valueChanges()
+    //   .subscribe((item) => console.log(item));
+    // update
+    // this.db.collection('comments')
+    //   .doc('16924413')
+    //   .set({ tag: ['ジブリ'], id: '16924413' });
+    combineLatest(
+      this.mylistService.getMylists(),
+      this.tagService.getTags(),
+      ((mylists, tags) => ({ mylists, tags }))
+    ).pipe(
+      map(({mylists, tags }) => mylists.map((mylist) => this.convert(mylist, tags)))
+    ).subscribe((items) => this.cashedItems = this.items = items);
   }
 
   ngOnInit() {
@@ -40,15 +50,16 @@ export class AppComponent implements OnInit {
     this.items = items;
   }
 
-  private convert(mylist: Mylist): Item {
+  private convert(mylist: Mylist, tagSrc: Tag[]): Item {
     const id = this.pickId(mylist.link[0]);
     const thumbnail = this.thumbnailUrl(id);
+    const tagItem = tagSrc.find((tag) => tag.id === id) || { tags: [] };
     return {
       id,
       title: mylist.title[0],
       url: mylist.link[0],
       thumbnail,
-      tags: [],
+      tags: tagItem.tags,
     } as Item;
   }
 

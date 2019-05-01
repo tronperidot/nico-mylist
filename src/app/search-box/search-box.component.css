@@ -8,6 +8,7 @@
 
 .badge {
   font-size: 24px;
+  margin-top: 5px;
   margin-right: 10px;
   font-family: "Noto Sans JP";
   cursor: pointer;
