@@ -14,7 +14,13 @@
 </div>
 <div>
   <div class="tags-form">
-    <div>タグしぼりこみ</div>
+    <div>
+      <span>タグしぼりこみ</span>
+      <button class="btn btn-primary float-right" (click)="onEdit()">
+        <span>へんしゅう　</span>
+        <i class="fas fa-edit"></i>
+      </button>
+    </div>
     <ng-container *ngFor="let tag of tags">
       <div class="badge badge-pill" [ngClass]="{ 'badge-secondary': !tag.isCheck, 'badge-info': tag.isCheck }" (click)=onCheck(tag)>{{ tag.label }}</div>
     </ng-container>

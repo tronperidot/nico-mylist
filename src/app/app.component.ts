@@ -2,9 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Item } from './mylist-item/mylist-item.component';
 import { Observable, of, combineLatest } from 'rxjs';
 import { Condition } from './search-box/search-box.component';
-import { AngularFirestore } from '@angular/fire/firestore';
 import { MylistService, Mylist } from './services/mylist.service';
-import { map, merge } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { TagService, Tag } from './services/tag.service';
 
 @Component({

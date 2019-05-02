@@ -11,12 +11,15 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { HttpClientModule } from '@angular/common/http';
+import { SimpleModalModule } from 'ngx-simple-modal';
+import { TagEditDialogComponent } from './tag-edit-dialog/tag-edit-dialog.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     MylistItemComponent,
-    SearchBoxComponent
+    SearchBoxComponent,
+    TagEditDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -26,8 +29,12 @@ import { HttpClientModule } from '@angular/common/http';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     AngularFireAuthModule,
+    SimpleModalModule.forRoot({container: document.body}),
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [
+    TagEditDialogComponent,
+  ]
 })
 export class AppModule { }
