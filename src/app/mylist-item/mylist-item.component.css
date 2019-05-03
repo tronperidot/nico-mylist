@@ -4,7 +4,13 @@
 }
 .link {
   cursor : pointer;
-  color: skyblue;
+}
+.link:hover {
+  text-decoration: underline;
+}
+
+.edit-btn {
+  color: #a67bca;
 }
 
 .badge {
@@ -16,4 +22,12 @@
 }
 .edit-area .badge {
   cursor: pointer;
+}
+
+.badge-secondary {
+  background: #cba9d4;
+}
+
+.badge-info {
+  background: #b2d4a9;
 }

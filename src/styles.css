@@ -1,5 +1,34 @@
 /* You can add global styles to this file, and also import other style files */
 
 body {
-  background-image: url("https://pbs.twimg.com/profile_banners/803161767140413440/1542454036/1500x500");
+  color: #a67bca;
+  background-image: url("assets/bg.jpg");
+}
+
+.card {
+  border-color: #d1b9e9;
+}
+
+.form-control {
+  border-color: #d1b9e9;
+}
+
+.btn-pink {
+  background-color: #a67bca;
+  border-color: #a67bca;
+  color: white;
+}
+
+.btn-pink:hover {
+  color: white;
+}
+
+.btn-outline-pink {
+  color: #a67bca;
+  border-color: #a67bca;
+}
+
+.btn-outline-pink:hover {
+  color: #a67bca;
+  border-color: #a67bca;
 }
