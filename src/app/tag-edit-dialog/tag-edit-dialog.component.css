@@ -20,6 +20,8 @@
   margin: 5px;
 }
 .image-btn {
+  background: white;
+  border: solid 1px;
   margin-left: 5px;
   border-radius: .25rem;
   padding-top: 2px;
