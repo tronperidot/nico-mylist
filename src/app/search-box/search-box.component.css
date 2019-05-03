@@ -1,6 +1,6 @@
 .tags-form {
   margin-top: 10px;
-  border: 1px solid rgba(0,0,0,.125);
+  border: 1px solid #d1b9e9;
   border-radius: 10px;
   width: 100%;
   padding: 10px;
@@ -12,4 +12,12 @@
   margin-right: 10px;
   font-family: "Noto Sans JP";
   cursor: pointer;
+}
+
+.badge-secondary {
+  background: #cba9d4;
+}
+
+.badge-info {
+  background: #b2d4a9;
 }

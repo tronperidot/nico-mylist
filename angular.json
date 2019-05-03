@@ -23,9 +23,9 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css",
               "./node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "./node_modules/ngx-simple-modal/src/styles/simple-modal.css"
+              "./node_modules/ngx-simple-modal/src/styles/simple-modal.css",
+              "src/styles.css"
             ],
             "scripts": [
               "./node_modules/jquery/dist/jquery.slim.min.js",

@@ -1,7 +1,40 @@
+.modal-header {
+  border-bottom-color: #d1b9e9;
+  font-family: "Nico Moji";
+}
+
+.modal-body {
+  color: #888888;
+  font-family: "Noto Sans JP";
+}
+
+.modal-footer {
+  border-top-color: #d1b9e9;
+}
+
 .btn-danger {
   margin-left: 5px;
 }
 
 .form-row {
   margin: 5px;
+}
+.image-btn {
+  margin-left: 5px;
+  border-radius: .25rem;
+  padding-top: 2px;
+}
+
+.rabbit-del {
+  height: 30px;
+  width: 30px;
+  margin-bottom: -5px;
+  background-size: contain;
+  display: inline-block;
+  background-image: url('../../assets/dastbox.png');
+  background-repeat: no-repeat;
+}
+
+.rabbit-del:hover {
+  background-image: url('../../assets/dastbox2.png');
 }

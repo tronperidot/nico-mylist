@@ -4,9 +4,9 @@
     <h5 class="link" (click)="open()">{{ item.title }}</h5>
     <div class="card-text" *ngIf="!isEditMode">タグ:
       <p
-          class="badge badge-pill badge-secondary"
+          class="badge badge-pill badge-info"
           *ngFor="let tag of item.tags">{{ tag }}</p>
-      <button (click)="onEdit()">編集</button>
+      <button class="btn edit-btn" (click)="onEdit()"><i class="fas fa-folder-open"></i></button>
     </div>
     <!-- 編集モード -->
     <div class="card-text edit-area" *ngIf="isEditMode">タグ:
@@ -19,7 +19,7 @@
             [ngClass]="{ 'badge-secondary': !tag.isUse, 'badge-info': tag.isUse }"
             for="tag{{i}}">{{ tag.label }}</label>
         </ng-container>
-      <button (click)="onEdit()">保存</button>
+      <button class="btn edit-btn" (click)="onEdit()"><i class="fas fa-folder-plus"></i></button>
     </div>
   </div>
 </div>

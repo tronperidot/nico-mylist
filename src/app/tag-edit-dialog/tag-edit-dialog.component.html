@@ -7,14 +7,14 @@
       <ng-container *ngFor="let tag of tags;let i = index">
         <div *ngIf="!tag.isRemoved" class="form-row">
           <input class="form-control col" [(ngModel)]="tag.label">
-          <button class="btn btn-danger" (click)="onRemove(i)"><i class="fas fa-trash-alt"></i></button>
+          <button class="btn-outline-pink image-btn" (click)="onRemove(i)"><span class="rabbit-del"></span></button>
         </div>
       </ng-container>
-      <button class="btn btn-primary" (click)="onAdd()"><i class="fas fa-plus-circle"></i></button>
+      <button class="btn btn-pink" (click)="onAdd()"><i class="fas fa-plus-circle"></i></button>
     </div>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline-danger" (click)="close()" >Cancel</button>
-    <button type="button" class="btn btn-primary" (click)="confirm()">OK</button>
+    <button type="button" class="btn btn-outline-pink" (click)="close()" >Cancel</button>
+    <button type="button" class="btn btn-pink" (click)="confirm()">OK</button>
   </div>
 </div>
