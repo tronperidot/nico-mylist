@@ -1,4 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { MasterService } from '../services/master.service';
+import { TagService } from '../services/tag.service';
 
 export interface Item {
   id: string;
@@ -8,6 +10,11 @@ export interface Item {
   tags: string[];
 }
 
+interface UseTag {
+  label: string;
+  isUse: boolean;
+}
+
 @Component({
   selector: 'app-mylist-item',
   templateUrl: './mylist-item.component.html',
@@ -15,13 +22,43 @@ export interface Item {
 })
 export class MylistItemComponent implements OnInit {
   @Input() item: Item;
+  isEditMode = false;
+  useTags: UseTag[];
 
-  constructor() { }
+  constructor(
+    public masterService: MasterService,
+    private tagService: TagService,
+  ) { }
 
   ngOnInit() {
   }
 
   open() {
     window.open(this.item.url);
+  }
+
+  onEdit() {
+    if (this.isEditMode) {
+      this.save();
+    } else {
+      this.useTags = this.masterService.tags.map((tag) => {
+        return {
+          label: tag.label,
+          isUse: this.item.tags.includes(tag.label)
+        } as UseTag;
+      });
+    }
+    this.isEditMode = !this.isEditMode;
+  }
+
+  private save() {
+    const tags = this.useTags
+      .filter((tag) => tag.isUse)
+      .map((tag) => tag.label);
+    this.tagService.update({
+      id: this.item.id,
+      tags
+    });
+    this.item.tags = tags;
   }
 }

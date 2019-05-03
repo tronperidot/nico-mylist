@@ -17,6 +17,14 @@ export class TagService {
   ) { }
 
   getTags(): Observable<Tag[]> {
-    return this.db.collection<Tag>('tags').valueChanges();
+    return this.tags.valueChanges();
+  }
+
+  update(tag: Tag) {
+    this.tags.doc(tag.id).set(tag);
+  }
+
+  private get tags() {
+    return this.db.collection<Tag>('tags');
   }
 }

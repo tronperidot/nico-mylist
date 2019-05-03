@@ -11,3 +11,9 @@
   margin-right: 5px;
   font-family: "Noto Sans JP";
 }
+.edit-area input[type=checkbox] {
+  display: none;
+}
+.edit-area .badge {
+  cursor: pointer;
+}

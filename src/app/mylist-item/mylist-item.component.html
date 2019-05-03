@@ -2,10 +2,24 @@
   <img class="card-img-top card-img-sm-left link" (click)="open()" [src]="item.thumbnail" style="width: 180px" />
   <div class="card-body">
     <h5 class="link" (click)="open()">{{ item.title }}</h5>
-    <div class="card-text">タグ:
+    <div class="card-text" *ngIf="!isEditMode">タグ:
       <p
           class="badge badge-pill badge-secondary"
           *ngFor="let tag of item.tags">{{ tag }}</p>
+      <button (click)="onEdit()">編集</button>
+    </div>
+    <!-- 編集モード -->
+    <div class="card-text edit-area" *ngIf="isEditMode">タグ:
+        <ng-container *ngFor="let tag of useTags; let i = index">
+          <input type="checkbox" name="tag{{i}}"
+            id="tag{{i}}"
+            [(ngModel)]="tag.isUse">
+          <label
+            class="badge badge-pill"
+            [ngClass]="{ 'badge-secondary': !tag.isUse, 'badge-info': tag.isUse }"
+            for="tag{{i}}">{{ tag.label }}</label>
+        </ng-container>
+      <button (click)="onEdit()">保存</button>
     </div>
   </div>
 </div>

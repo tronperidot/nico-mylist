@@ -12,10 +12,13 @@ export interface MasterTag {
   providedIn: 'root'
 })
 export class MasterService {
+  tags: MasterTag[] = [];
 
   constructor(
     private db: AngularFirestore,
-  ) { }
+  ) {
+    this.getTags().subscribe((tags) => this.tags = tags);
+  }
 
   getTags(): Observable<MasterTag[]> {
     return this.tagMaster.valueChanges();
@@ -34,7 +37,8 @@ export class MasterService {
         this.tagMaster.doc(tag.id).set(tag);
       }
     });
-    return targets.filter((target) => !target.isRemoved);
+    this.tags = targets.filter((target) => !target.isRemoved);
+    return this.tags;
   }
 
   private get tagMaster() {
