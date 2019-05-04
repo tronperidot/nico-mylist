@@ -5,6 +5,7 @@ import { Condition } from './search-box/search-box.component';
 import { MylistService, Mylist } from './services/mylist.service';
 import { map } from 'rxjs/operators';
 import { TagService, Tag } from './services/tag.service';
+import { LoadingScreenService } from './services/loading-screen/loading-screen.service';
 
 @Component({
   selector: 'app-root',
@@ -16,19 +17,24 @@ export class AppComponent implements OnInit {
   items$: Observable<Item[]>;
   items: Item[];
   // HACK: リファクタリング
-  cashedItems: Item[];
+  cashedItems: Item[] = [];
 
   constructor(
     private tagService: TagService,
     private mylistService: MylistService,
+    private loadingService: LoadingScreenService,
   ) {
+    this.loadingService.startLoading();
     combineLatest(
       this.mylistService.getMylists(),
       this.tagService.getTags(),
       ((mylists, tags) => ({ mylists, tags }))
     ).pipe(
       map(({mylists, tags }) => mylists.map((mylist) => this.convert(mylist, tags)))
-    ).subscribe((items) => this.cashedItems = this.items = items);
+    ).subscribe((items) => {
+      this.loadingService.stopLoading();
+      this.cashedItems = this.items = items;
+    });
   }
 
   ngOnInit() {

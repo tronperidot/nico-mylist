@@ -21,12 +21,7 @@ export interface Condition {
   styleUrls: ['./search-box.component.css']
 })
 export class SearchBoxComponent implements OnInit {
-  @Input() tags: Tag[] = [
-    { label: 'ジブリ', isCheck: false },
-    { label: 'ボカロ', isCheck: false },
-    { label: 'アニソン', isCheck: false },
-    { label: 'ショタ', isCheck: false },
-  ];
+  @Input() tags: Tag[] = [];
   @Output() search: EventEmitter<Condition> = new EventEmitter<Condition>();
   searchText = '';
   constructor(
