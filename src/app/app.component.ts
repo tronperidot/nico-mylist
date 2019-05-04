@@ -38,6 +38,8 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log('↑このエラーはいつか直す。');
+    this.log();
   }
 
   onSearch(condition: Condition) {
@@ -67,5 +69,19 @@ export class AppComponent implements OnInit {
 
   private thumbnailUrl(id: string): string {
     return `https://tn.smilevideo.jp/smile?i=${id}`;
+  }
+
+  private log() {
+    console.log(`
+　　　　 /⌒)
+　　／＼/ ／
+　 (_人｜/
+　　／θ θ＼
+　 ミ(_Ｙ_)ミ　　＜ Nekoshi is excellent Kuno lisner.）
+　　 ＞　＜
+　　(／　＼)
+　 _(　　　)_
+　(＿＞―＜＿)
+    `);
   }
 }
