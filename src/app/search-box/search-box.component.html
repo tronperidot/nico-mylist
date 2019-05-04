@@ -22,7 +22,19 @@
       </button>
     </div>
     <ng-container *ngFor="let tag of tags">
-      <div class="badge badge-pill" [ngClass]="{ 'badge-secondary': !tag.isCheck, 'badge-info': tag.isCheck }" (click)=onCheck(tag)>{{ tag.label }}</div>
+      <a
+        class="tag-item stripe"
+        (click)=onCheck(tag)
+        [ngClass]="{ 'tag-checked': tag.isCheck, 'tag-unchecked': !tag.isCheck }"
+        >
+        <i class="far fa-square" *ngIf="!tag.isCheck"></i>
+        <i class="far check-color fa-check-square" *ngIf="tag.isCheck"></i>
+        <span
+          style="margin-left: 10px"
+          [ngClass]="{ 'check-color': tag.isCheck }"
+        >{{ tag.label }}</span>
+    </a>
+      <!-- <div class="badge badge-pill" [ngClass]="{ 'badge-secondary': !tag.isCheck, 'badge-info': tag.isCheck }" (click)=onCheck(tag)>{{ tag.label }}</div> -->
     </ng-container>
   </div>
 </div>
