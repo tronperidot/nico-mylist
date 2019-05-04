@@ -4,7 +4,7 @@
     <h5 class="link" (click)="open()">{{ item.title }}</h5>
     <div class="card-text" *ngIf="!isEditMode">タグ:
       <p
-          class="badge badge-pill badge-info"
+          class="badge badge-pill badge-secondary"
           *ngFor="let tag of item.tags">{{ tag }}</p>
       <button class="btn edit-btn" (click)="onEdit()"><i class="fas fa-folder-open"></i></button>
     </div>

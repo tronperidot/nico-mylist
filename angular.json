@@ -25,6 +25,7 @@
             "styles": [
               "./node_modules/bootstrap/dist/css/bootstrap.min.css",
               "./node_modules/ngx-simple-modal/src/styles/simple-modal.css",
+              "src/assets/timer.css",
               "src/styles.css"
             ],
             "scripts": [
