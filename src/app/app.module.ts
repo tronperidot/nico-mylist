@@ -13,6 +13,7 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { HttpClientModule } from '@angular/common/http';
 import { SimpleModalModule } from 'ngx-simple-modal';
 import { TagEditDialogComponent } from './tag-edit-dialog/tag-edit-dialog.component';
+import { LoadingScreenComponent } from './components/loading-screen/loading-screen.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { TagEditDialogComponent } from './tag-edit-dialog/tag-edit-dialog.compon
     MylistItemComponent,
     SearchBoxComponent,
     TagEditDialogComponent,
+    LoadingScreenComponent,
   ],
   imports: [
     BrowserModule,
