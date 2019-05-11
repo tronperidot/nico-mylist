@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Item } from './mylist-item/mylist-item.component';
 import { Observable, of, combineLatest } from 'rxjs';
 import { Condition } from './search-box/search-box.component';
@@ -47,7 +47,7 @@ export class AppComponent implements OnInit {
     condition.tags.forEach(tag => {
       items = items.filter((item) => item.tags.includes(tag));
     });
-    this.items = items;
+    this.reload(items);
   }
 
   private convert(mylist: Mylist, tagSrc: Tag[]): Item {
@@ -69,6 +69,17 @@ export class AppComponent implements OnInit {
 
   private thumbnailUrl(id: string): string {
     return `https://tn.smilevideo.jp/smile?i=${id}`;
+  }
+
+  /**
+   * ページトップまでのスクロールのアニメーションだと見栄えが悪いので、表示をなくすことで強制的にページトップにさせる処理をする
+   * @param items 検索結果
+   */
+  private reload(items: Item[]): void {
+    this.items = [];
+    setTimeout(() => {
+      this.items = items;
+    }, 0);
   }
 
   private log() {
