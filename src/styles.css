@@ -13,6 +13,10 @@ body {
   border-color: #d1b9e9;
 }
 
+.modal {
+  z-index: 2000;
+}
+
 .btn-pink {
   background-color: #a67bca;
   border-color: #a67bca;

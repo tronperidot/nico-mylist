@@ -57,7 +57,7 @@ export class SearchBoxComponent implements OnInit {
     this.modalService.addModal(TagEditDialogComponent, {
       tags: this.tags.map((tag) => Object.assign({}, tag))
     }).subscribe((result) => {
-      if (result.result) {
+      if (result && result.result) {
         this.save(result.tags);
       }
     });
