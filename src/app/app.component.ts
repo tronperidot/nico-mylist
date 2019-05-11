@@ -79,7 +79,7 @@ export class AppComponent implements OnInit {
     this.items = [];
     setTimeout(() => {
       this.items = items;
-    }, 0);
+    }, 250);
   }
 
   private log() {
