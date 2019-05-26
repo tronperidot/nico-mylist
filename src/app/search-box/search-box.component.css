@@ -6,6 +6,15 @@
   padding: 10px;
 }
 
+.sang-form {
+  margin-top: 10px;
+}
+
+.setting-toggle {
+  margin-left: 10px;
+  cursor: pointer;
+}
+
 .tag-item {
   display: inline-block;
   font-size: 24px;

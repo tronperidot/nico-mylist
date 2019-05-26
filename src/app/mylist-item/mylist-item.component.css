@@ -9,6 +9,13 @@
   text-decoration: underline;
 }
 
+.is-sang {
+  position: absolute;
+  pointer-events: none;
+  width: 65px;
+  height: 65px;
+}
+
 .edit-btn {
   color: #a67bca;
 }
