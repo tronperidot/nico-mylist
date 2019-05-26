@@ -3,7 +3,7 @@
     <label>search area</label>
   </div>
   <div style="margin-right: 10px">
-    <input class="form-control" [(ngModel)]="searchText" (keyup.enter)="onSearch()">
+    <input class="form-control" [(ngModel)]="searchText" (keyup.enter)="onTextKeyUp()">
   </div>
   <div style="margin-right: 10px">
     <button class="btn btn-pink" (click)="onSearch()">サガス</button>

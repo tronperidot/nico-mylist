@@ -1,11 +1,13 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Item } from './mylist-item/mylist-item.component';
-import { Observable, of, combineLatest } from 'rxjs';
+import { Observable, combineLatest } from 'rxjs';
 import { Condition } from './search-box/search-box.component';
 import { MylistService, Mylist } from './services/mylist.service';
-import { map } from 'rxjs/operators';
+import { map, tap, delay, skip, filter } from 'rxjs/operators';
 import { TagService, Tag } from './services/tag.service';
 import { LoadingScreenService } from './services/loading-screen/loading-screen.service';
+import { ConditionService } from './services/condition.service';
+import * as deepEqual from 'deep-equal';
 
 @Component({
   selector: 'app-root',
@@ -14,26 +16,31 @@ import { LoadingScreenService } from './services/loading-screen/loading-screen.s
 })
 export class AppComponent implements OnInit {
   title = 'マイリストさがすやつ';
-  items$: Observable<Item[]>;
+  // HACK: 本当はObservableにするのがいいのはわかっているけど、一度から配列にして描画をいい感じにさせたいので、仕方なくこれにしている。
   items: Item[];
-  // HACK: リファクタリング
-  cashedItems: Item[] = [];
 
   constructor(
     private tagService: TagService,
     private mylistService: MylistService,
     private loadingService: LoadingScreenService,
+    private conditionService: ConditionService,
   ) {
-    this.loadingService.startLoading();
+    const mylists$ = this.mylist$();
+    // combineLatestだとdistinctUntilChangedのprevが取れないため
+    let prevCondition: Condition;
     combineLatest(
-      this.mylistService.getMylists(),
-      this.tagService.getTags(),
-      ((mylists, tags) => ({ mylists, tags }))
+      mylists$,
+      this.conditionService.resource$,
+      ((mylists, condition) => ({ mylists, condition }))
     ).pipe(
-      map(({mylists, tags }) => mylists.map((mylist) => this.convert(mylist, tags)))
+      skip(1),
+      filter(({ condition }) => !deepEqual(prevCondition, condition)),
+      tap(({ condition }) => prevCondition = Object.assign({}, condition)),
+      map(({ mylists, condition }) => this.search(mylists, condition)),
+      tap(() => this.items = []),
+      delay(250), // ページトップまでのスクロールのアニメーションだと見栄えが悪いので、表示をなくすことで強制的にページトップにさせる処理をする
     ).subscribe((items) => {
-      this.loadingService.stopLoading();
-      this.cashedItems = this.items = items;
+      this.items = items;
     });
   }
 
@@ -42,12 +49,12 @@ export class AppComponent implements OnInit {
     this.log();
   }
 
-  onSearch(condition: Condition) {
-    let items = this.cashedItems.filter((val) => val.title.indexOf(condition.text) !== -1);
+  private search(mylists: Item[], condition: Condition): Item[] {
+    let items = mylists.filter((val) => val.title.indexOf(condition.text) !== -1);
     condition.tags.forEach(tag => {
       items = items.filter((item) => item.tags.includes(tag));
     });
-    this.reload(items);
+    return items;
   }
 
   private convert(mylist: Mylist, tagSrc: Tag[]): Item {
@@ -63,23 +70,25 @@ export class AppComponent implements OnInit {
     } as Item;
   }
 
+  private mylist$(): Observable<Item[]> {
+    this.loadingService.startLoading();
+    return combineLatest(
+      this.mylistService.getMylists(),
+      this.tagService.getTags(),
+      ((mylists, tags) => ({ mylists, tags }))
+    ).pipe(
+      map(({mylists, tags }) => mylists.map((mylist) => this.convert(mylist, tags))),
+      tap((items) => this.items = items),
+      tap(() => this.loadingService.stopLoading()),
+    );
+  }
+
   private pickId(movieUrl: string): string {
     return movieUrl.split('https://www.nicovideo.jp/watch/sm')[1];
   }
 
   private thumbnailUrl(id: string): string {
     return `https://tn.smilevideo.jp/smile?i=${id}`;
-  }
-
-  /**
-   * ページトップまでのスクロールのアニメーションだと見栄えが悪いので、表示をなくすことで強制的にページトップにさせる処理をする
-   * @param items 検索結果
-   */
-  private reload(items: Item[]): void {
-    this.items = [];
-    setTimeout(() => {
-      this.items = items;
-    }, 250);
   }
 
   private log() {

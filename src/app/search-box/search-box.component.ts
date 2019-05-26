@@ -1,7 +1,8 @@
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { SimpleModalService } from 'ngx-simple-modal';
 import { TagEditDialogComponent } from '../tag-edit-dialog/tag-edit-dialog.component';
 import { MasterService, MasterTag } from '../services/master.service';
+import { ConditionService } from '../services/condition.service';
 
 export interface Tag {
   id?: string;
@@ -22,11 +23,11 @@ export interface Condition {
 })
 export class SearchBoxComponent implements OnInit {
   @Input() tags: Tag[] = [];
-  @Output() search: EventEmitter<Condition> = new EventEmitter<Condition>();
   searchText = '';
   constructor(
     private modalService: SimpleModalService,
     private masterService: MasterService,
+    private condition: ConditionService,
   ) {
     this.masterService
       .getTags()
@@ -39,18 +40,26 @@ export class SearchBoxComponent implements OnInit {
   }
 
   onSearch() {
-    const tags = this.tags.filter((tag) => tag.isCheck).map((tag) => tag.label);
-    this.search.emit({ text: this.searchText, tags });
+    const tags = this.getFilteredTags();
+    this.condition.setCondtiion({
+      text: this.searchText,
+      tags,
+    });
   }
 
   onClear() {
     this.searchText = '';
-    this.onSearch();
+    this.condition.setText(this.searchText);
+  }
+
+  onTextKeyUp(): void {
+    this.condition.setText(this.searchText);
   }
 
   onCheck(tag: Tag) {
     tag.isCheck = !tag.isCheck;
-    this.onSearch();
+    const tags = this.getFilteredTags();
+    this.condition.setTags(tags);
   }
 
   onEdit() {
@@ -61,6 +70,10 @@ export class SearchBoxComponent implements OnInit {
         this.save(result.tags);
       }
     });
+  }
+
+  private getFilteredTags(): string[] {
+    return this.tags.filter((t) => t.isCheck).map((t) => t.label);
   }
 
   private save(tags: Tag[]) {
