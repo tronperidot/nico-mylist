@@ -3,7 +3,7 @@ import { Item } from './mylist-item/mylist-item.component';
 import { Observable, combineLatest } from 'rxjs';
 import { Condition } from './search-box/search-box.component';
 import { MylistService, Mylist } from './services/mylist.service';
-import { map, tap, delay, skip, filter } from 'rxjs/operators';
+import { map, tap, delay, skip, filter, first } from 'rxjs/operators';
 import { TagService, Tag } from './services/tag.service';
 import { LoadingScreenService } from './services/loading-screen/loading-screen.service';
 import { ConditionService } from './services/condition.service';
@@ -25,7 +25,14 @@ export class AppComponent implements OnInit {
     private loadingService: LoadingScreenService,
     private conditionService: ConditionService,
   ) {
+    this.loadingService.startLoading();
     const mylists$ = this.mylist$();
+    mylists$.pipe(
+      first(),
+    ).subscribe((items) => {
+      this.items = items;
+      this.loadingService.stopLoading();
+    });
     // combineLatestだとdistinctUntilChangedのprevが取れないため
     let prevCondition: Condition;
     combineLatest(
@@ -71,15 +78,12 @@ export class AppComponent implements OnInit {
   }
 
   private mylist$(): Observable<Item[]> {
-    this.loadingService.startLoading();
     return combineLatest(
       this.mylistService.getMylists(),
       this.tagService.getTags(),
       ((mylists, tags) => ({ mylists, tags }))
     ).pipe(
       map(({mylists, tags }) => mylists.map((mylist) => this.convert(mylist, tags))),
-      tap((items) => this.items = items),
-      tap(() => this.loadingService.stopLoading()),
     );
   }
 
