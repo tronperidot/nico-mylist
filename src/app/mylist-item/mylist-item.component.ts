@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { MasterService } from '../services/master.service';
 import { TagService } from '../services/tag.service';
+import { SangService } from '../services/sang/sang.service';
 
 export interface Item {
   id: string;
@@ -8,6 +9,7 @@ export interface Item {
   url: string;
   thumbnail: string;
   tags: string[];
+  isSang: boolean;
 }
 
 interface UseTag {
@@ -28,12 +30,15 @@ export class MylistItemComponent implements OnInit {
   constructor(
     public masterService: MasterService,
     private tagService: TagService,
+    private sangSerive: SangService,
   ) { }
 
   ngOnInit() {
   }
 
   open() {
+    this.item.isSang = true;
+    this.sangSerive.addSang(this.item);
     window.open(this.item.url);
   }
 

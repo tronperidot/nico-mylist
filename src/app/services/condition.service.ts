@@ -4,6 +4,13 @@ import { Subject, ReplaySubject } from 'rxjs';
 export interface Condition {
   text: string;
   tags: string[];
+  excludeSangSong: boolean;
+}
+
+export interface QueryCondition {
+  text?: string;
+  tags?: string[];
+  excludeSangSong?: boolean;
 }
 
 @Injectable({
@@ -15,29 +22,28 @@ export class ConditionService {
   readonly resource$: Subject<Condition> = new ReplaySubject<Condition>(1);
 
   constructor() {
-    this.reset();
-  }
-
-  setText(text: string): void {
-    const condition = Object.assign(this.condition, { text });
-    this.setCondtiion(condition);
-  }
-
-  setTags(tags: string[]): void {
-    const condition = Object.assign(this.condition, { tags });
-    this.setCondtiion(condition);
+    this.condition = this.defaultCondtion();
   }
 
   reset(): void {
     const condition = {
       text: '',
       tags: [],
+      excludeSangSong: true,
     };
     this.setCondtiion(condition);
   }
 
-  setCondtiion(condition: Condition): void {
-    this.condition = condition;
-    this.resource$.next(condition);
+  setCondtiion(condition: QueryCondition): void {
+    this.condition = Object.assign(this.condition, condition);
+    this.resource$.next(this.condition);
+  }
+
+  private defaultCondtion(): Condition {
+    return {
+      text: '',
+      tags: [],
+      excludeSangSong: true,
+    };
   }
 }

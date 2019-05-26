@@ -34,7 +34,26 @@
           [ngClass]="{ 'check-color': tag.isCheck }"
         >{{ tag.label }}</span>
     </a>
-      <!-- <div class="badge badge-pill" [ngClass]="{ 'badge-secondary': !tag.isCheck, 'badge-info': tag.isCheck }" (click)=onCheck(tag)>{{ tag.label }}</div> -->
     </ng-container>
+    <div class="sang-form">
+      <div>
+        <span>そのたせってい</span>
+        <i class="setting-toggle fas fa-tasks" data-toggle="collapse" data-target="#otherSetting"></i>
+      </div>
+      <div id="otherSetting" class="collapse">
+        <a
+            class="tag-item stripe"
+            (click)=onSangSettingCheck(!excludeSangSong)
+            [ngClass]="{ 'tag-checked': excludeSangSong, 'tag-unchecked': !excludeSangSong }"
+            >
+            <i class="far fa-square" *ngIf="!excludeSangSong"></i>
+            <i class="far check-color fa-check-square" *ngIf="excludeSangSong"></i>
+            <span
+              style="margin-left: 10px"
+              [ngClass]="{ 'check-color': excludeSangSong }"
+            >今日うたった曲を外す</span>
+        </a>
+      </div>
+    </div>
   </div>
 </div>

@@ -11,11 +11,6 @@ export interface Tag {
   isRemoved?: boolean;
 }
 
-export interface Condition {
-  text: string;
-  tags: string[];
-}
-
 @Component({
   selector: 'app-search-box',
   templateUrl: './search-box.component.html',
@@ -24,6 +19,7 @@ export interface Condition {
 export class SearchBoxComponent implements OnInit {
   @Input() tags: Tag[] = [];
   searchText = '';
+  excludeSangSong = true;
   constructor(
     private modalService: SimpleModalService,
     private masterService: MasterService,
@@ -44,22 +40,30 @@ export class SearchBoxComponent implements OnInit {
     this.condition.setCondtiion({
       text: this.searchText,
       tags,
+      excludeSangSong: this.excludeSangSong,
     });
   }
 
   onClear() {
-    this.searchText = '';
-    this.condition.setText(this.searchText);
+    const text = '';
+    this.searchText = text;
+    this.condition.setCondtiion({ text });
   }
 
   onTextKeyUp(): void {
-    this.condition.setText(this.searchText);
+    const text = this.searchText;
+    this.condition.setCondtiion({ text });
   }
 
   onCheck(tag: Tag) {
     tag.isCheck = !tag.isCheck;
     const tags = this.getFilteredTags();
-    this.condition.setTags(tags);
+    this.condition.setCondtiion({ tags });
+  }
+
+  onSangSettingCheck(excludeSangSong: boolean) {
+    this.excludeSangSong = excludeSangSong;
+    this.condition.setCondtiion({ excludeSangSong });
   }
 
   onEdit() {

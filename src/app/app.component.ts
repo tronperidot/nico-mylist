@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Item } from './mylist-item/mylist-item.component';
 import { Observable, combineLatest } from 'rxjs';
-import { Condition } from './search-box/search-box.component';
 import { MylistService, Mylist } from './services/mylist.service';
-import { map, tap, delay, skip, filter, first } from 'rxjs/operators';
+import { map, tap, delay, filter, first } from 'rxjs/operators';
 import { TagService, Tag } from './services/tag.service';
 import { LoadingScreenService } from './services/loading-screen/loading-screen.service';
-import { ConditionService } from './services/condition.service';
+import { ConditionService, Condition } from './services/condition.service';
 import * as deepEqual from 'deep-equal';
+import { SangService } from './services/sang/sang.service';
 
 @Component({
   selector: 'app-root',
@@ -24,6 +24,7 @@ export class AppComponent implements OnInit {
     private mylistService: MylistService,
     private loadingService: LoadingScreenService,
     private conditionService: ConditionService,
+    private sangService: SangService,
   ) {
     this.loadingService.startLoading();
     const mylists$ = this.mylist$();
@@ -40,7 +41,6 @@ export class AppComponent implements OnInit {
       this.conditionService.resource$,
       ((mylists, condition) => ({ mylists, condition }))
     ).pipe(
-      skip(1),
       filter(({ condition }) => !deepEqual(prevCondition, condition)),
       tap(({ condition }) => prevCondition = Object.assign({}, condition)),
       map(({ mylists, condition }) => this.search(mylists, condition)),
@@ -57,14 +57,19 @@ export class AppComponent implements OnInit {
   }
 
   private search(mylists: Item[], condition: Condition): Item[] {
-    let items = mylists.filter((val) => val.title.indexOf(condition.text) !== -1);
-    condition.tags.forEach(tag => {
-      items = items.filter((item) => item.tags.includes(tag));
-    });
+    const items = mylists.filter((item) => this.isMatch(item, condition));
     return items;
   }
 
-  private convert(mylist: Mylist, tagSrc: Tag[]): Item {
+  private isMatch(item: Item, condition: Condition): boolean {
+    return (
+      (item.title.indexOf(condition.text) !== -1) &&
+      !(condition.excludeSangSong && item.isSang) &&
+      condition.tags.every((tag) => item.tags.includes(tag))
+    );
+  }
+
+  private convert(mylist: Mylist, tagSrc: Tag[], sangs: Item[]): Item {
     const id = this.pickId(mylist.link[0]);
     const thumbnail = this.thumbnailUrl(id);
     const { tags } = tagSrc.find((tag) => tag.id === id) || { tags: [] };
@@ -74,16 +79,19 @@ export class AppComponent implements OnInit {
       url: mylist.link[0],
       thumbnail,
       tags,
+      isSang: sangs.some((item) => item.id === id),
     } as Item;
   }
 
   private mylist$(): Observable<Item[]> {
+    // HACK: sangは頻繁に変わるからこいつの変更では進ませたくない
     return combineLatest(
       this.mylistService.getMylists(),
       this.tagService.getTags(),
-      ((mylists, tags) => ({ mylists, tags }))
+      this.sangService.resource$,
+      ((mylists, tags, sangs) => ({ mylists, tags, sangs }))
     ).pipe(
-      map(({mylists, tags }) => mylists.map((mylist) => this.convert(mylist, tags))),
+      map(({mylists, tags, sangs }) => mylists.map((mylist) => this.convert(mylist, tags, sangs))),
     );
   }
 
