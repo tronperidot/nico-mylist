@@ -1,4 +1,4 @@
-<div class="card flex-sm-row mb-gutter">
+<div class="card flex-sm-row mb-gutter" *ngIf="item">
   <img class="card-img-top card-img-sm-left link" (click)="open()" [src]="item.thumbnail" style="width: 180px" />
   <img class="is-sang" src="./assets/sang.png" *ngIf="item.isSang" />
   <div class="card-body">

@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TagEditDialogComponent } from './tag-edit-dialog.component';
+import { FormsModule } from '@angular/forms';
 
 describe('TagEditDialogComponent', () => {
   let component: TagEditDialogComponent;
@@ -8,6 +9,9 @@ describe('TagEditDialogComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [
+        FormsModule,
+      ],
       declarations: [ TagEditDialogComponent ]
     })
     .compileComponents();
